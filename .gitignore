@@ -23,3 +23,5 @@ out/
 # BibTeX
 *.bbl
 *.blg
+
+.idea/
