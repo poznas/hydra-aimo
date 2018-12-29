@@ -1,0 +1,23 @@
+@startuml
+hide circle
+hide empty members
+
+entity KURDE_NIE_ZAPISALEM_XD {
+   * identifying_attribute
+   --
+   * mandatory_attribute
+   optional_attribute
+}
+
+' zero or one
+A |o--o| B
+
+' exactly one
+C ||--|| D
+
+' zero or many
+E }o--o{ F
+
+' one or many
+G }|--|{ H
+@enduml
