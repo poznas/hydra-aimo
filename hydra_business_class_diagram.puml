@@ -1,0 +1,91 @@
+@startuml
+
+hide empty members
+
+class User {
+    userId : String
+    username : String
+    email : String
+    imageUrl : String
+    provider : String
+}
+
+enum Privilege {
+    FN_PRV_CREATE_INFORMATION
+    FN_PRV_CREATE_REFERRAL
+}
+
+class Company {
+    companyId : String
+    companyName : String
+    address : String
+    language : String
+}
+
+enum RecruitmentType {
+    INTERVIEW
+    TEST
+}
+
+class Information {
+    informationId : int
+    content : String
+    programmingLanguage : String
+    recruitmentType : RecruitmentType
+}
+
+enum Vote {
+    UP
+    DOWN
+}
+
+class InformationVote {
+    vote : Vote
+}
+
+class JobAnnouncement {
+    jobId : int
+    city : String
+    jobTitle : String
+    jobDescription : String 
+    programmingLanguages : String[]
+    minSalary : int
+    maxSalary : int 
+    closingDate : Date
+}
+
+class ReferralAnnouncement {
+    referralId : int
+    referralDescription : String 
+    referralBonus : int 
+    referralBonusPercentage : double
+}
+
+class ReferralApplication {
+    applicationId : int
+    githubUrl : String 
+    linkedinUrl : String 
+    cvDownloadUrl : String
+}
+
+User *---> Privilege : privileges
+
+InformationVote <. Vote
+Information <. RecruitmentType
+
+Information "*" --> "1" User : < author 
+Information "*" --> "1" Company : < company
+
+InformationVote "voter" --* "authorVotes" User 
+InformationVote <--* Information : informationVotes
+
+JobAnnouncement "*" --> "1" Company : < company
+
+ReferralAnnouncement "*" --> "1" User : < author
+ReferralAnnouncement "*" --> "1" JobAnnouncement : < job
+ReferralApplication <--* ReferralAnnouncement : applications
+ReferralApplication "*" --> "1" User : < applier
+
+
+
+@enduml
