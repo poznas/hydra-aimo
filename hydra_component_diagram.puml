@@ -1,0 +1,89 @@
+@startuml
+actor User
+
+frame "Google Servers" {
+ component [OAuth 2.0 Services]
+}
+
+component [Frontend Application]
+
+
+
+package "Backend Application" {
+ package "Security Layer" {
+  component [Login Filter]
+  component [Bearer Filter]
+ }
+
+ package "REST Controllers" {
+  component [AuthController]
+  component [RegisterController]
+  component [WikiController]
+  component [ReferralController]
+  component [JobController]
+ }
+
+ package "Business Logic" {
+  component [UserService]
+  component [PrivilegeService]
+  component [CompanyService]
+  component [WikiService]
+  component [ReferralService]
+  component [JobService]
+ }
+
+ package "Data Access" {
+  component UserRepository
+  component PrivilegeRepository
+  component CompanyRepository
+  component WikiRepository
+  component ReferralRepository
+  component JobRepository
+ }
+}
+
+database PostgreSQL
+
+
+User -- [Frontend Application]
+[Frontend Application] -- [Login Filter] : REST / JSON
+[Frontend Application] -- [Bearer Filter] : REST / JSON
+
+[Frontend Application] - [OAuth 2.0 Services] : REST / JSON
+[Login Filter] -- [OAuth 2.0 Services] : REST / JSON
+
+
+[Login Filter] -- [AuthController]
+[Bearer Filter] -- [AuthController]
+[Bearer Filter] -- [RegisterController]
+[Bearer Filter] -- [WikiController]
+[Bearer Filter] -- [ReferralController]
+[Bearer Filter] -- [JobController]
+
+[Login Filter] -- UserService
+AuthController -- PrivilegeService
+RegisterController -- CompanyService
+WikiController -- WikiService
+ReferralController -- ReferralService
+JobController -- JobService
+
+CompanyService -- PrivilegeService
+WikiService -- PrivilegeService
+ReferralService -- PrivilegeService
+JobService -- PrivilegeService
+JobService - ReferralService
+
+UserService -- UserRepository
+PrivilegeService -- PrivilegeRepository
+CompanyService -- CompanyRepository
+WikiService -- WikiRepository
+ReferralService -- ReferralRepository
+JobService -- JobRepository
+
+UserRepository -- PostgreSQL : <<JDBC>>
+PrivilegeRepository -- PostgreSQL : <<JDBC>>
+CompanyRepository -- PostgreSQL : <<JDBC>>
+WikiRepository -- PostgreSQL : <<JDBC>>
+ReferralRepository -- PostgreSQL : <<JDBC>>
+JobRepository -- PostgreSQL : <<JDBC>>
+@enduml
