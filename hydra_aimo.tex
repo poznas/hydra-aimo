@@ -60,10 +60,43 @@ Daniel Poznański\\
 \end{table}
 
 \chapter{SRS - Specyfikacja wymagań}
+\section{Logowanie za pomocą konta Google}
+\section{Dodaj wpis do Wiki}
+\section{Zagłosuj na wpis na Wiki}
+\section{Dodaj ogłoszenie o pracy}
+\section{Dodaj RA}
+\section{Złóż aplikację na RA}
+
+
 \chapter{Architektura systemu}
 
 \section{Diagram komponentów}
 \includegraphics[width=\textwidth, keepaspectratio]{hydra_component_diagram.pdf}
+
+\section{Opis warstw}
+\subsection{Frontend Application}
+Klient na platformy mobilne zrealizowany w języku \textbf{JavaScript} z wykorzystaniem frameworku \textbf{React Native}.
+Pisany w ten sposób kod jest renderowany do natywnych implementacji Android \textit{(Java)} i iOS \textit{(Swift)}.
+
+\subsection{Backend Application}
+Serwer zrealizowany w technologii \textbf{Java} z wykorzystaniem biblioteki \textbf{Spring}
+
+\subsubsection{Security Layer}
+Warstwa odpowiada za zabezpieczenie dostępu do dalszych zasobów. 
+Waliduje nadchodzące requesty na podstawie bearer tokena zawartego w ich nagłówkach.
+Wychodząca odpowiedź serwera jest wzbogacana o odświeżony token i idektyfikator użytkownika.\\
+Jedynym wyjątkiem w tym zabezpieczeniu jest próba logowania.
+
+\subsubsection{REST Controllers}
+Komponenty te mapują zapytania do wywołań odpowiednich metod warstwy logiki biznesowej. 
+Dodatkowo, nadchodzące requesty poddawane są walidacji pod kątem formatu zawartych danych.
+
+\subsubsection{Business Logic}
+Warstwa enkapsulująca logikę biznesową.
+
+\subsubsection{Data Access}
+Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie danych. 
+
 
 \chapter{Projekt oprogramowania}
 \chapter{Projekt interfejsu użytkownika IRS}
