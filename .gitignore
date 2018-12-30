@@ -24,4 +24,7 @@ out/
 *.bbl
 *.blg
 
+# Gimp
+*.xcf
+
 .idea/
