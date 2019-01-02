@@ -1,0 +1,100 @@
+@startuml
+actor User
+actor Google
+database AsyncStorage
+boundary LoginScreen
+control LoginFilter
+control UserService
+control UserRepository
+database DB
+
+User -> LoginScreen : signWithGoogle()
+activate LoginScreen
+LoginScreen -> Google : googleSignIn()
+
+activate Google
+Google --> LoginScreen: IDToken
+deactivate Google
+LoginScreen -> LoginFilter: verifyIDToken(IDToken)
+activate LoginFilter
+LoginFilter -> Google: verifyToken(IDToken)
+
+
+alt valid ID Token 
+activate Google
+Google --> LoginFilter : User
+deactivate Google
+LoginFilter -> UserService : userExists(userId)
+activate UserService
+UserService -> UserRepository : userExists(userId)
+activate UserRepository
+UserRepository -> DB 
+activate DB
+DB --> UserRepository
+deactivate DB
+UserRepository --> UserService
+deactivate UserRepository
+
+alt user exists
+UserService --> LoginFilter : true
+deactivate UserService
+
+else user does not exist
+
+UserService --> LoginFilter : false
+activate UserService
+
+LoginFilter -> UserService : createUser(User)
+UserService -> UserRepository : createUser(User)
+activate UserRepository
+UserRepository -> DB
+activate DB
+DB --> UserRepository : ok
+deactivate DB
+UserRepository --> UserService : ok
+deactivate UserRepository
+UserService --> LoginFilter : ok
+deactivate UserService
+end
+
+LoginFilter -> LoginFilter: generateJwt(userId)
+LoginFilter --> LoginScreen : jwtToken
+deactivate LoginFilter
+collections AsyncStorage
+LoginScreen -> AsyncStorage: saveJwtToken(jwtToken)
+activate AsyncStorage
+AsyncStorage --> LoginScreen : ok
+deactivate AsyncStorage
+LoginScreen -> LoginScreen : navigateToWikiScreen()
+
+
+else invalid ID Token 
+activate Google
+activate LoginFilter
+Google --> LoginFilter : validation failure message
+deactivate Google
+LoginFilter --> LoginScreen : error message
+deactivate LoginFilter
+LoginScreen -> LoginScreen : showLoginError()
+end
+
+box "Client" #LightBlue
+   participant LoginScreen
+   participant AsyncStorage
+end box
+
+box "External API" #White
+   participant Google
+end box
+
+box "Server" #Pink
+   participant LoginFilter
+   participant UserService
+   participant UserRepository
+end box
+
+box "Model" #Orange
+   participant DB
+end box
+
+@enduml
