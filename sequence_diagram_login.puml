@@ -15,7 +15,7 @@ LoginScreen -> Google : googleSignIn()
 activate Google
 Google --> LoginScreen: IDToken
 deactivate Google
-LoginScreen -> LoginFilter: verifyIDToken(IDToken)
+LoginScreen -> LoginFilter: **POST /auth/login** (IDToken)
 activate LoginFilter
 LoginFilter -> Google: verifyToken(IDToken)
 
@@ -66,6 +66,8 @@ activate AsyncStorage
 AsyncStorage --> LoginScreen : ok
 deactivate AsyncStorage
 LoginScreen -> LoginScreen : navigateToWikiScreen()
+
+ref over LoginScreen : **UC_4** 
 
 
 else invalid ID Token 
