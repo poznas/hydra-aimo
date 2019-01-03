@@ -5,7 +5,7 @@ database AsyncStorage
 boundary LoginScreen
 control LoginFilter
 control UserService
-control UserRepository
+control HydraRepository
 database DB
 
 User -> LoginScreen : signWithGoogle()
@@ -26,14 +26,14 @@ Google --> LoginFilter : User
 deactivate Google
 LoginFilter -> UserService : userExists(userId)
 activate UserService
-UserService -> UserRepository : userExists(userId)
-activate UserRepository
-UserRepository -> DB 
+UserService -> HydraRepository : userExists(userId)
+activate HydraRepository
+HydraRepository -> DB 
 activate DB
-DB --> UserRepository
+DB --> HydraRepository
 deactivate DB
-UserRepository --> UserService
-deactivate UserRepository
+HydraRepository --> UserService
+deactivate HydraRepository
 
 alt user exists
 UserService --> LoginFilter : true
@@ -45,14 +45,14 @@ UserService --> LoginFilter : false
 activate UserService
 
 LoginFilter -> UserService : createUser(User)
-UserService -> UserRepository : createUser(User)
-activate UserRepository
-UserRepository -> DB
+UserService -> HydraRepository : createUser(User)
+activate HydraRepository
+HydraRepository -> DB
 activate DB
-DB --> UserRepository : ok
+DB --> HydraRepository : ok
 deactivate DB
-UserRepository --> UserService : ok
-deactivate UserRepository
+HydraRepository --> UserService : ok
+deactivate HydraRepository
 UserService --> LoginFilter : ok
 deactivate UserService
 end
@@ -90,7 +90,7 @@ end box
 box "Server" #Pink
    participant LoginFilter
    participant UserService
-   participant UserRepository
+   participant HydraRepository
 end box
 
 box "Model" #Orange

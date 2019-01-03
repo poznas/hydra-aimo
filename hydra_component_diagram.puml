@@ -15,30 +15,20 @@ package "Backend Application" {
   component [Bearer Filter]
  }
 
- package "REST Controllers" {
-  component [AuthController]
-  component [RegisterController]
-  component [WikiController]
-  component [ReferralController]
-  component [JobController]
+ package "REST Controller" {
+  component [HydraController]
  }
 
  package "Business Logic" {
   component [UserService]
   component [PrivilegeService]
-  component [CompanyService]
   component [WikiService]
   component [ReferralService]
   component [JobService]
  }
 
  package "Data Access" {
-  component UserRepository
-  component PrivilegeRepository
-  component CompanyRepository
-  component WikiRepository
-  component ReferralRepository
-  component JobRepository
+  component HydraRepository
  }
 }
 
@@ -53,37 +43,23 @@ User -- [Frontend Application]
 [Login Filter] -- [OAuth 2.0 Services] : REST / JSON
 
 
-[Login Filter] -- [AuthController]
-[Bearer Filter] -- [AuthController]
-[Bearer Filter] -- [RegisterController]
-[Bearer Filter] -- [WikiController]
-[Bearer Filter] -- [ReferralController]
-[Bearer Filter] -- [JobController]
+[Bearer Filter] --- [HydraController]
 
-[Login Filter] -- UserService
-AuthController -- PrivilegeService
-RegisterController -- CompanyService
-WikiController -- WikiService
-ReferralController -- ReferralService
-JobController -- JobService
+[Login Filter] --- UserService
+HydraController -- WikiService
+HydraController -- ReferralService
+HydraController -- JobService
+HydraController -- PrivilegeService
 
-CompanyService -- PrivilegeService
 WikiService -- PrivilegeService
 ReferralService -- PrivilegeService
 JobService -- PrivilegeService
-JobService - ReferralService
 
-UserService -- UserRepository
-PrivilegeService -- PrivilegeRepository
-CompanyService -- CompanyRepository
-WikiService -- WikiRepository
-ReferralService -- ReferralRepository
-JobService -- JobRepository
+UserService -- HydraRepository
+PrivilegeService -- HydraRepository
+WikiService -- HydraRepository
+ReferralService -- HydraRepository
+JobService -- HydraRepository
 
-UserRepository -- PostgreSQL : <<JDBC>>
-PrivilegeRepository -- PostgreSQL : <<JDBC>>
-CompanyRepository -- PostgreSQL : <<JDBC>>
-WikiRepository -- PostgreSQL : <<JDBC>>
-ReferralRepository -- PostgreSQL : <<JDBC>>
-JobRepository -- PostgreSQL : <<JDBC>>
+HydraRepository -- PostgreSQL : <<JDBC>>
 @enduml
