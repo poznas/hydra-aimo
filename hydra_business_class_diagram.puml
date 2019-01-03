@@ -61,13 +61,6 @@ class ReferralAnnouncement {
     referralBonusPercentage : double
 }
 
-class ReferralApplication {
-    applicationId : int
-    githubUrl : String 
-    linkedinUrl : String 
-    cvDownloadUrl : String
-}
-
 User *---> Privilege : privileges
 
 InformationVote <. Vote
@@ -83,9 +76,6 @@ JobAnnouncement "*" --> "1" Company : < company
 
 ReferralAnnouncement "*" --> "1" User : < author
 ReferralAnnouncement "*" --> "1" JobAnnouncement : < job
-ReferralApplication <--* ReferralAnnouncement : applications
-ReferralApplication "*" --> "1" User : < applier
-
 
 
 @enduml
