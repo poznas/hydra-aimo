@@ -69,12 +69,28 @@ Daniel Poznański\\
 //TODO: Danon
 
 \chapter{SRS - Specyfikacja wymagań}
-\section{Logowanie za pomocą konta Google}
-\section{Dodaj wpis do Wiki}
-\section{Zagłosuj na wpis na Wiki}
-\section{Dodaj RA}
-\section{Złóż aplikację na RA}
-\section{Pokaż złożone applikacje na RA}
+\section{Diagram przypadków użycia - Wiki}
+\includegraphics[width=\textwidth, keepaspectratio]{graphics/wiki_use_case_diagram.pdf}
+
+\section{Diagram przypadków użycia - Job, Referral}
+\includegraphics[width=\textwidth, keepaspectratio]{graphics/job_referral_use_case_diagram.pdf}
+
+\section{Przypadki użycia powiązane z zabezpieczeniem dostępu}
+\subsection{UC\_1 Logowanie za pomocą konta Google}
+\subsection{UC\_2 Dekoracja zapytania HTTP tokenem aktualnie zalogowanego użytkownika}
+\subsection{UC\_3 Autentykacja użytkownika}
+
+\section{Przypadki użycia powiązane z Wiki}
+\subsection{UC\_4 Wyświetl listę wpisów w Wiki}
+\subsection{UC\_5 Dodaj wpis do Wiki}
+\subsection{UC\_6 Zagłosuj na wpis na Wiki}
+
+\section{Przypadki użycia powiązane z Job, Referral}
+\subsection{UC\_7 Wyświetl listę ofert pracy}
+\subsection{UC\_8 Wyświetl szczegóły oferty pracy}
+\subsection{UC\_9 Dodaj RA}
+\subsection{UC\_10 Wyświetl listę RA}
+\subsection{UC\_11 Wyświetl szczegóły RA}
 
 
 \chapter{Architektura systemu}
@@ -96,7 +112,7 @@ Waliduje nadchodzące requesty na podstawie bearer tokena zawartego w ich nagł�
 Wychodząca odpowiedź serwera jest wzbogacana o odświeżony token i idektyfikator użytkownika.\\
 Jedynym wyjątkiem w tym zabezpieczeniu jest próba logowania.
 
-\subsubsection{REST Controllers}
+\subsubsection{REST Controller}
 Komponenty te mapują zapytania do wywołań odpowiednich metod warstwy logiki biznesowej. 
 Dodatkowo, nadchodzące requesty poddawane są walidacji pod kątem formatu zawartych danych.
 
@@ -109,7 +125,7 @@ Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie d
 
 \chapter{Projekt oprogramowania}
 
-\section{Logowanie za pomocą konta Google}
+\section{UC\_1 Logowanie za pomocą konta Google}
 \subsubsection{Diagram powiązanych klas}
 
 \subsubsection{Diagram sewkencji}
