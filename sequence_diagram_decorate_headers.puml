@@ -1,0 +1,24 @@
+@startuml
+database AsyncStorage
+boundary Screen << Any except LoginScreen >>
+
+box "Client" #LightBlue
+   participant Screen 
+   participant AsyncStorage
+end box
+
+[-> Screen : <<user action>>
+activate Screen
+Screen -> AsyncStorage : getJwtToken()
+activate AsyncStorage
+AsyncStorage --> Screen : jwtToken
+note right
+ Currently logged in user jwt token. 
+ Retrieved from server after successful sign in 
+ **(UC_1)**.
+end note
+deactivate AsyncStorage
+Screen -> Screen : decorateRequestHeaders()
+Screen ->] : <<send request>>
+
+@enduml

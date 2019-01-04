@@ -1,0 +1,37 @@
+@startuml
+control BearerFilter
+boundary Screen << Any except LoginScreen >>
+
+
+box "Client" #LightBlue
+   participant Screen
+end box
+
+box "Server" #Pink
+   participant BearerFilter
+end box
+
+activate Screen
+Screen -> BearerFilter : << send request >>
+
+activate BearerFilter
+BearerFilter -> BearerFilter : validateJwtToken(request)
+
+alt token is valid 
+note right of BearerFilter
+ userId decoded from token
+end note
+    BearerFilter -> BearerFilter : decorateRequestWithUserId()
+    BearerFilter ->] : << forward request >>
+    deactivate BearerFilter
+else token is not valid
+    BearerFilter --> Screen : error message
+    Screen -> Screen : showErrorMessage()
+    Screen -> Screen : navigateToLoginScreen()
+
+    ref over Screen : **UC_1**
+end alt
+
+
+
+@enduml
