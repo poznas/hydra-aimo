@@ -1,0 +1,48 @@
+@startuml
+actor User
+boundary ReferralScreen
+control HydraController
+control ReferralService
+control HydraRepository
+
+database DB
+
+box "Client" #LightBlue
+   participant ReferralScreen
+end box
+
+box "Server" #Pink
+   control HydraController
+    control ReferralService
+    control HydraRepository
+end box
+
+box "Model" #Orange
+   participant DB
+end box
+
+User -> ReferralScreen : navigateToReferralScreen()
+activate ReferralScreen
+ref over ReferralScreen : **UC_2**
+ReferralScreen -> HydraController : **GET /referral/referrals** (token)
+ref over HydraController : **UC_3**
+
+activate HydraController
+HydraController -> ReferralService : getReferrals()
+activate ReferralService
+ReferralService -> HydraRepository : getReferrals()
+activate HydraRepository
+HydraRepository -> DB
+activate DB
+DB --> HydraRepository 
+deactivate DB
+HydraRepository --> ReferralService : List<ReferralAnnouncement>
+deactivate HydraRepository
+ReferralService --> HydraController : List<ReferralAnnouncement>
+deactivate ReferralService
+HydraController --> ReferralScreen : List<ReferralAnnouncement>
+deactivate HydraController
+ReferralScreen -> ReferralScreen : renderReferrals()
+
+
+@enduml
