@@ -1,0 +1,114 @@
+@startuml
+actor User
+boundary JobDetailsScreen
+boundary CreateReferralScreen
+control HydraController
+control ReferralService
+control HydraRepository
+
+database DB
+
+box "Client" #LightBlue
+participant JobDetailsScreen
+participant CreateReferralScreen
+end box
+
+box "Server" #Pink
+control HydraController
+control ReferralService
+control HydraRepository
+end box
+
+box "Model" #Orange
+participant DB
+end box
+
+User -> JobDetailsScreen : clickCreateReferralButton()
+activate JobDetailsScreen
+
+note over JobDetailsScreen : **UC_5 / RETRIEVE USER **\n**PRIVILEGES FROM SERVER**
+
+alt user has FN_PRV_CREATE_REFERRAL
+
+    JobDetailsScreen -> CreateReferralScreen : //<< navigate >>//
+    deactivate JobDetailsScreen
+    activate CreateReferralScreen
+
+    User -> CreateReferralScreen : completeForm()
+    User -> CreateReferralScreen : clickSubmitButton()
+
+    ref over CreateReferralScreen : **UC_2**
+    CreateReferralScreen -> HydraController : **POST /referral/add** (token, referral)
+    ref over HydraController : **UC_3**
+
+    activate HydraController
+    HydraController -> ReferralService : addReferral(userId, referral)
+    note over ReferralService : **UC_5 / GET USER PRIVILEGES**
+    activate ReferralService
+
+    alt user has FN_PRV_CREATE_REFERRAL
+
+        ReferralService -> HydraRepository : activeReferralExist(jobId, userId)
+        note left of HydraRepository
+            checks whether user
+            has active (not closed)
+            referral announcement
+            assigned to that job
+            created already
+        end note
+        activate HydraRepository
+        HydraRepository -> DB
+        activate DB
+        DB --> HydraRepository
+        deactivate DB
+
+        alt no active referral
+            HydraRepository --> ReferralService : false
+            deactivate HydraRepository
+
+            ReferralService -> HydraRepository : addReferral(referral)
+            activate HydraRepository
+            HydraRepository -> DB
+            activate DB
+            DB --> HydraRepository
+            deactivate DB
+            HydraRepository --> ReferralService : ok
+            deactivate HydraRepository
+            ReferralService --> HydraController : ok
+            deactivate ReferralService
+            HydraController --> CreateReferralScreen : ok
+            deactivate HydraController
+
+            CreateReferralScreen -> CreateReferralScreen : navigateToReferralScreen()
+
+        else active referral exists
+        activate HydraRepository
+        activate ReferralService
+        activate HydraController
+        HydraRepository --> ReferralService : true
+        deactivate HydraRepository
+
+        ReferralService --> HydraController : error message
+        deactivate ReferralService
+        HydraController --> CreateReferralScreen : error message
+        deactivate HydraController
+        CreateReferralScreen -> CreateReferralScreen : showErrorMessage()
+
+        activate ReferralService
+        activate HydraController
+
+        end
+
+    else no FN_PRV_CREATE_REFERRAL
+
+        ReferralService --> HydraController : error message
+        deactivate ReferralService
+        HydraController --> CreateReferralScreen : error message
+        deactivate HydraController
+        CreateReferralScreen -> CreateReferralScreen : showErrorMessage()
+
+    end
+
+end
+
+@enduml

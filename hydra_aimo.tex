@@ -1,16 +1,22 @@
-\documentclass{scrreprt}
+\documentclass[oneside]{scrreprt}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{aeguill}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+	footskip=.5cm,
+}
 \usepackage[bookmarks=true]{hyperref}
 \hypersetup{
     bookmarks=false,    % show bookmarks bar?
     pdftitle={AGHydra - aimo},    % title
-    pdfauthor={Yiannis Lazarides},                     % author
-    pdfsubject={TeX and LaTeX},                        % subject of the document
-    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    pdfsubject={Software Engineering},                        % subject of the document
     colorlinks=true,       % false: boxed links; true: colored links
     linkcolor=blue,       % color of internal links
     citecolor=black,       % color of links to bibliography
@@ -20,7 +26,6 @@
 \def\myversion{1.0 }
 \title{%
 \flushright
-\rule{16cm}{5pt}\vskip1cm
 \Huge{Analiza\\ i Modelowanie Oprogramowania \\ - projekt}\\
 \vspace{2cm}
 dla\\
@@ -31,8 +36,6 @@ Przygotowane przez:\\
 Bartosz Śliwa\\
 Michał Dziedzic\\
 Daniel Poznański\\
-\vfill
-\rule{16cm}{5pt}
 }
 \date{}
 \usepackage{hyperref}
@@ -78,7 +81,9 @@ Daniel Poznański\\
 \section{Przypadki użycia powiązane z zabezpieczeniem dostępu}
 \subsection{UC\_1 Logowanie za pomocą konta Google}
 \subsection{UC\_2 Dekoracja zapytania HTTP tokenem aktualnie zalogowanego użytkownika}
+//Po konsultacji
 \subsection{UC\_3 Autentykacja użytkownika}
+//Po konsultacji
 
 \section{Przypadki użycia powiązane z Wiki}
 \subsection{UC\_4 Wyświetl listę wpisów w Wiki}
@@ -91,7 +96,6 @@ Daniel Poznański\\
 \subsection{UC\_9 Dodaj RA}
 \subsection{UC\_10 Wyświetl listę RA}
 \subsection{UC\_11 Wyświetl szczegóły RA}
-
 
 \chapter{Architektura systemu}
 
@@ -122,10 +126,10 @@ Warstwa enkapsulująca logikę biznesową.
 \subsubsection{Data Access}
 Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie danych. 
 
-
 \chapter{Projekt oprogramowania}
 
 \subsection{Diagram klas}
+//TODO: Danon
 
 \section{UC\_1 Logowanie za pomocą konta Google}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_login.pdf}
@@ -151,13 +155,14 @@ Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie d
 \section{UC\_8 Wyświetl szczegóły oferty pracy}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_job_details.pdf}
 
+\section{UC\_9 Dodaj RA}
+\includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_referral_add.pdf}
+
 \section{UC\_10 Wyświetl listę RA}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_referral_list.pdf}
 
 \section{UC\_11 Wyświetl szczegóły RA}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_referral_details.pdf}
-
-
 
 \chapter{Projekt interfejsu użytkownika IRS}
 
@@ -170,7 +175,6 @@ Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie d
 \begin{center}
 	\makebox[\textwidth]{\includegraphics[width=\textwidth]{graphics/job_referral_user_interface}}
 \end{center}
-
 
 \chapter{Projekt bazy danych}
 
