@@ -1,0 +1,18 @@
+@startuml
+actor User
+boundary ReferralScreen
+boundary ReferralDetailsScreen
+
+
+box "Client" #LightBlue
+   participant ReferralScreen
+   participant ReferralDetailsScreen
+end box
+
+User -> ReferralScreen : tapOnReferralItem()
+activate ReferralScreen
+ReferralScreen -> ReferralDetailsScreen : //<< navigate >>//
+activate ReferralDetailsScreen
+ReferralDetailsScreen -> ReferralDetailsScreen : renderReferralDetails()
+
+@enduml
