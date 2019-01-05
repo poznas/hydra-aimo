@@ -1,0 +1,18 @@
+@startuml
+actor User
+boundary JobScreen
+boundary JobDetailsScreen
+
+
+box "Client" #LightBlue
+   participant JobScreen
+   participant JobDetailsScreen
+end box
+
+User -> JobScreen : tapOnJobItem()
+activate JobScreen
+JobScreen -> JobDetailsScreen : //<< navigate >>//
+activate JobDetailsScreen
+JobDetailsScreen -> JobDetailsScreen : renderJobDetails()
+
+@enduml
