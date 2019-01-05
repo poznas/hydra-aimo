@@ -1,0 +1,57 @@
+@startuml
+actor User
+boundary WikiScreen
+control HydraController
+control WikiService
+control HydraRepository
+
+database DB
+
+box "Client" #LightBlue
+   participant WikiScreen
+end box
+
+box "Server" #Pink
+   control HydraController
+    control WikiService
+    control HydraRepository
+end box
+
+box "Model" #Orange
+   participant DB
+end box
+
+User -> WikiScreen : tapOnEntryVoteButton()
+
+activate WikiScreen
+alt user clicked previously selected option
+WikiScreen -> WikiScreen : //**info.vote = null**//
+else user clicked positive option
+WikiScreen -> WikiScreen : //**info.vote = UP**//
+else user clicked negative option
+WikiScreen -> WikiScreen : //**info.vote = DOWN**//
+end
+
+ref over WikiScreen : **UC_2**
+WikiScreen -> HydraController : **POST /wiki/info/vote** (token, //**info.vote**//)
+ref over HydraController : **UC_3**
+
+activate HydraController
+HydraController -> WikiService : voteForWikiInfo(vote)
+activate WikiService
+WikiService -> HydraRepository : voteForWikiInfo(vote)
+activate HydraRepository
+HydraRepository -> DB : << create or update >>
+activate DB
+DB --> HydraRepository
+deactivate DB
+HydraRepository --> WikiService : ok
+deactivate HydraRepository
+WikiService --> HydraController : ok
+deactivate WikiService
+HydraController --> WikiScreen : ok
+deactivate HydraController
+WikiScreen -> WikiScreen : renderWikiEntry()
+
+
+@enduml
