@@ -1,0 +1,132 @@
+@startuml
+actor User
+boundary WikiScreen
+boundary AddWikiInfoScreen
+control HydraController
+control WikiService
+control PrivilegeService
+control HydraRepository
+
+database DB
+
+box "Client" #LightBlue
+participant WikiScreen
+participant AddWikiInfoScreen
+end box
+
+box "Server" #Pink
+control HydraController
+control WikiService
+control PrivilegeService
+control HydraRepository
+end box
+
+box "Model" #Orange
+participant DB
+end box
+
+User -> WikiScreen : clickAddButton()
+activate WikiScreen
+
+group RETRIEVE USER PRIVILEGES FROM SERVER
+    ref over WikiScreen : **UC_2**
+    WikiScreen -> HydraController : **GET /auth/prigileges** (token)
+    ref over HydraController : **UC_3**
+
+    activate HydraController
+
+    group GET USER PRIVILEGES
+        HydraController -> PrivilegeService : getUserPrivileges(userId)
+        activate PrivilegeService
+        PrivilegeService -> HydraRepository : getUserPrivileges(userId)
+        activate HydraRepository
+        HydraRepository -> DB
+        activate DB
+        DB --> HydraRepository
+        deactivate DB
+        HydraRepository --> PrivilegeService : List<Privilege>
+        deactivate HydraRepository
+        PrivilegeService --> HydraController : List<Privilege>
+        deactivate PrivilegeService
+    end
+    HydraController --> WikiScreen : List<Privilege>
+    deactivate HydraController
+
+end
+
+alt user has FN_PRV_CREATE_INFORMATION
+    WikiScreen -> AddWikiInfoScreen : //<< navigate >>//
+
+    activate AddWikiInfoScreen
+
+    ref over AddWikiInfoScreen : **UC_2**
+    AddWikiInfoScreen -> HydraController : **GET /wiki/companies** (token)
+    ref over HydraController : **UC_3**
+
+    activate HydraController
+
+    HydraController -> WikiService : getCompanies()
+    activate WikiService
+    WikiService -> HydraRepository : getCompanies()
+    activate HydraRepository
+    HydraRepository -> DB
+    activate DB
+    DB --> HydraRepository
+    deactivate DB
+    HydraRepository --> WikiService : List<Company>
+    deactivate HydraRepository
+    WikiService --> HydraController : List<Company>
+    deactivate WikiService
+
+    HydraController --> AddWikiInfoScreen : List<Company>
+    deactivate HydraController
+
+    AddWikiInfoScreen -> AddWikiInfoScreen : updateCompanyPicker()
+
+
+    User -> AddWikiInfoScreen : completeForm()
+    User -> AddWikiInfoScreen : clickSubmitButton()
+
+    ref over AddWikiInfoScreen : **UC_2**
+    AddWikiInfoScreen -> HydraController : **POST /wiki/info/add** (token, information)
+    ref over HydraController : **UC_3**
+
+    activate HydraController
+    HydraController -> WikiService : addWikiInfo(userId, information)
+    note over WikiService : **GET USER PRIVILEGES**
+    activate WikiService
+
+    alt user has FN_PRV_CREATE_INFORMATION
+
+        WikiService -> HydraRepository : addWikiInfo(information)
+        activate HydraRepository
+        HydraRepository -> DB
+        activate DB
+        DB --> HydraRepository
+        deactivate DB
+        HydraRepository --> WikiService : ok
+        deactivate HydraRepository
+        WikiService --> HydraController : ok
+        deactivate WikiService
+        HydraController --> AddWikiInfoScreen : ok
+        deactivate HydraController
+
+    else no FN_PRV_CREATE_INFORMATION
+
+        activate WikiService
+
+        WikiService --> HydraController : error message
+        deactivate WikiService
+        activate HydraController
+        HydraController --> AddWikiInfoScreen : error message
+        deactivate HydraController
+        AddWikiInfoScreen -> AddWikiInfoScreen : showErrorMessage()
+
+    end
+
+    AddWikiInfoScreen -> WikiScreen : //<< navigate >>//
+
+end
+
+
+@enduml
