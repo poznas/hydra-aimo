@@ -64,7 +64,7 @@ Daniel Poznański\\
 
 \section{Diagram obiektów biznesowych}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/hydra_business_class_diagram.pdf}
-
+ł
 \section{Opis obiektów biznesowych?}
 //TODO: Danon
 
@@ -171,8 +171,24 @@ Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie d
 \section{Diagram ERD}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/hydra_db_erd.pdf}
 
+\clearpage
 \section{Specyfikacja kwerend}
-//TODO: Danon
-
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{p{4.5cm}|p{5cm}|p{7cm}}
+		\textbf{Kwerenda} & \textbf{Zwracana wartość} & \textbf{Opis} \\ \hline
+		userExists(userId) & boolean & sprawdza czy dane użytkownika o podanym ID istnieją już w tabeli HYDRA\_USER \\ \hline
+		createUser(user) &  & tworzy nowy wiersz w HYDRA\_USER z danymi użytkownika \\ \hline
+		getWikiEntries() & List\textless{}Information\textgreater{} & wyciąga z RECRUITMENT\_INFORMATION wszystkie aktywne wpisy \\ \hline
+		getUserPrivileges(userId) & List\textless{}Privilege\textgreater{} & wyciąga z tabeli PRIVILEGE uprawnienia przypisane użytkownikowi \\ \hline
+		getCompanies() & List\textless{}Company\textgreater{} & wyciąga z tabeli COMPANY wszystkie aktywne informacje o firmach \\ \hline
+		addWikiInfo(information) &  & dodaje do tabeli RECRUITMENT\_INFORMATION nowy wpis wiki \\ \hline
+		voteForWikiInfo(vote) &  & dodaje lub aktualizuje wpis w tabeli INFORMATION\_VOTE \\ \hline
+		getJobs() & List\textless{}JobAnnouncement\textgreater{} & wyciąga z tabeli JOB\_ANNOUNCEMENT wszystkie aktywne oferty pracy, których data ważności wyprzedza aktualną datę \\ \hline
+		activeReferralExist(userId, jobId) & boolean & sprawdza czy w tabeli REFERRAL\_ANNOUNCEMENT istnieje aktywna, nieprzeterminowana RA, utworzona przez użytkownika \\ \hline
+		addReferral(referral) &  & dodaje do tabeli REFERRAL\_ANNOUNCEMENT nowy wierz z RA \\ \hline
+		getReferrals() & List\textless{}ReferralAnnouncement\textgreater{} & wyciąga z tabeli REFERRAL\_ANNOUNCEMENT wszystkie aktywne RA, których data ważności wyprzedza aktualną datę
+	\end{tabular}
+\end{table}
 
 \end{document}
