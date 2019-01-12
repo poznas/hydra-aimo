@@ -32,9 +32,9 @@ else user clicked negative option
 WikiScreen -> WikiScreen : //**info.vote = DOWN**//
 end
 
-ref over WikiScreen : **UC_2**
+ref over WikiScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
 WikiScreen -> HydraController : **POST /wiki/info/vote** (token, //**info.vote**//)
-ref over HydraController : **UC_3**
+ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
 activate HydraController
 HydraController -> WikiService : voteForWikiInfo(vote)

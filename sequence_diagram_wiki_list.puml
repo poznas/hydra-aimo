@@ -1,6 +1,8 @@
 @startuml
 actor User
 boundary WikiScreen
+database AsyncStorage
+control BearerFilter
 control HydraController
 control WikiService
 control HydraRepository
@@ -8,41 +10,80 @@ control HydraRepository
 database DB
 
 box "Client" #LightBlue
-   participant WikiScreen
+participant WikiScreen
+participant AsyncStorage
 end box
 
 box "Server" #Pink
-   control HydraController
-    control WikiService
-    control HydraRepository
+control BearerFilter
+control HydraController
+control WikiService
+control HydraRepository
 end box
 
 box "Model" #Orange
-   participant DB
+participant DB
 end box
 
 User -> WikiScreen : navigateToWikiScreen()
 activate WikiScreen
-ref over WikiScreen : **UC_2**
-WikiScreen -> HydraController : **GET /wiki/entries** (token)
-ref over HydraController : **UC_3**
 
-activate HydraController
-HydraController -> WikiService : getWikiEntries()
-activate WikiService
-WikiService -> HydraRepository : getWikiEntries()
-activate HydraRepository
-HydraRepository -> DB
-activate DB
-DB --> HydraRepository 
-deactivate DB
-HydraRepository --> WikiService : List<Information>
-deactivate HydraRepository
-WikiService --> HydraController : List<Information>
-deactivate WikiService
-HydraController --> WikiScreen : List<Information>
-deactivate HydraController
-WikiScreen -> WikiScreen : renderWikiEntries()
+group DECORATE REQUEST WITH JWT TOKEN
+   WikiScreen -> AsyncStorage : getJwtToken()
+   activate AsyncStorage
+   AsyncStorage --> WikiScreen : jwtToken
+   note right
+      Currently logged in user jwt token.
+      Retrieved from server after successful sign in
+      **(UC_1)**.
+   end note
+   deactivate AsyncStorage
+   WikiScreen -> WikiScreen : decorateRequestHeaders()
+end
 
+WikiScreen -> BearerFilter : **GET /wiki/entries** (token)
+
+activate BearerFilter
+
+group VALIDATE USER TOKEN
+
+   BearerFilter -> BearerFilter : validateJwtToken(request)
+
+   alt token is not valid
+      BearerFilter --> WikiScreen : error message
+      deactivate BearerFilter
+      WikiScreen -> WikiScreen : showErrorMessage()
+      WikiScreen -> WikiScreen : navigateToLoginScreen()
+
+      ref over WikiScreen : **UC_1**
+
+   else token is valid
+      note right of BearerFilter
+         userId decoded from token
+      end note
+      activate BearerFilter
+      BearerFilter -> BearerFilter : decorateRequestWithUserId()
+      BearerFilter -> HydraController : << forward request >>
+      activate HydraController
+      deactivate BearerFilter
+      end alt
+
+   end
+
+   HydraController -> WikiService : getWikiEntries()
+   activate WikiService
+   WikiService -> HydraRepository : getWikiEntries()
+   activate HydraRepository
+   HydraRepository -> DB
+   activate DB
+   DB --> HydraRepository
+   deactivate DB
+   HydraRepository --> WikiService : List<Information>
+   deactivate HydraRepository
+   WikiService --> HydraController : List<Information>
+   deactivate WikiService
+   HydraController --> WikiScreen : List<Information>
+   deactivate HydraController
+   WikiScreen -> WikiScreen : renderWikiEntries()
 
 @enduml

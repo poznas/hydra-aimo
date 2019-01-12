@@ -3,14 +3,6 @@ left to right direction
 
 actor user
 
-  usecase UC_2 as "**UC_2** 
-  // Auth // 
-  Dekoracja zapytania HTTP 
-  tokenem aktualnie zalogowanego użytkownika"
-  usecase UC_3 as "**UC_3** 
-  // Auth // 
-  Autentykacja użytkownika"
-
   usecase UC_7 as "**UC_7** 
   // Job // 
   Wyświetl listę ofert pracy"
@@ -28,25 +20,12 @@ actor user
   // Referral // 
   Wyświetl szczegóły RA"
 
-
-    UC_8 .> UC_7 : extends
-    UC_9 .> UC_8 : extends
-    UC_9 .> UC_10 : includes
-    UC_11 .> UC_10 : extends
-
-
     user --> UC_7
     user --> UC_10
 
-
-    UC_7 ....> UC_2 : includes
-    UC_7 ....> UC_3 : includes
-
-    UC_9 ....> UC_2 : includes
-    UC_9 ....> UC_3 : includes
-
-    UC_10 ....> UC_2 : includes
-    UC_10 ....> UC_3 : includes
-
+    UC_8 ..> UC_7 : extends
+    UC_9 ..> UC_8 : extends
+    UC_9 ..> UC_10 : includes
+    UC_11 ..> UC_10 : extends
     
 @enduml

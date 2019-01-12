@@ -29,9 +29,9 @@ User -> WikiScreen : clickAddButton()
 activate WikiScreen
 
 group RETRIEVE USER PRIVILEGES FROM SERVER
-    ref over WikiScreen : **UC_2**
+    ref over WikiScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
     WikiScreen -> HydraController : **GET /auth/prigileges** (token)
-    ref over HydraController : **UC_3**
+    ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
     activate HydraController
 
@@ -59,9 +59,9 @@ alt user has FN_PRV_CREATE_INFORMATION
 
     activate AddWikiInfoScreen
 
-    ref over AddWikiInfoScreen : **UC_2**
+    ref over AddWikiInfoScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
     AddWikiInfoScreen -> HydraController : **GET /wiki/companies** (token)
-    ref over HydraController : **UC_3**
+    ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
     activate HydraController
 
@@ -87,13 +87,13 @@ alt user has FN_PRV_CREATE_INFORMATION
     User -> AddWikiInfoScreen : completeForm()
     User -> AddWikiInfoScreen : clickSubmitButton()
 
-    ref over AddWikiInfoScreen : **UC_2**
+    ref over AddWikiInfoScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
     AddWikiInfoScreen -> HydraController : **POST /wiki/info/add** (token, information)
-    ref over HydraController : **UC_3**
+    ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
     activate HydraController
     HydraController -> WikiService : addWikiInfo(userId, information)
-    note over WikiService : **GET USER PRIVILEGES**
+    ref over WikiService : **GET USER PRIVILEGES**
     activate WikiService
 
     alt user has FN_PRV_CREATE_INFORMATION

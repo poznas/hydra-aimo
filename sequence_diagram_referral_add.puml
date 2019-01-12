@@ -26,7 +26,7 @@ end box
 User -> JobDetailsScreen : clickCreateReferralButton()
 activate JobDetailsScreen
 
-note over JobDetailsScreen : **UC_5 / RETRIEVE USER **\n**PRIVILEGES FROM SERVER**
+ref over JobDetailsScreen : **UC_5 / RETRIEVE USER **\n**PRIVILEGES FROM SERVER**
 
 alt user has FN_PRV_CREATE_REFERRAL
 
@@ -37,13 +37,13 @@ alt user has FN_PRV_CREATE_REFERRAL
     User -> CreateReferralScreen : completeForm()
     User -> CreateReferralScreen : clickSubmitButton()
 
-    ref over CreateReferralScreen : **UC_2**
+    ref over CreateReferralScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
     CreateReferralScreen -> HydraController : **POST /referral/add** (token, referral)
-    ref over HydraController : **UC_3**
+    ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
     activate HydraController
     HydraController -> ReferralService : addReferral(userId, referral)
-    note over ReferralService : **UC_5 / GET USER PRIVILEGES**
+    ref over ReferralService : **UC_5 / GET USER PRIVILEGES**
     activate ReferralService
 
     alt user has FN_PRV_CREATE_REFERRAL

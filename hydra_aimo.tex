@@ -54,7 +54,7 @@ Daniel Poznański\\
 		\multicolumn{1}{l|}{Firma}         & Określenie firm działających w branży IT, oferujących stanowiska stażowe lub normalne oferty pracy dla programistów \\ \hline
 		\multicolumn{1}{l|}{System, Hydra} & całość rozwiązania składająca się z aplikacji frontowej i backendu                                                  \\ \hline
 		\multicolumn{1}{l|}{UF}            & Uprawnienie funkcjonalne, wymagane do wykonania określonych akcji, przypisane do użytkownika                        \\ \hline
-		\multicolumn{1}{l|}{Moduł}         & Wydzielona jako moduł Maven cześć aplikacji backendowej implementująca funkcjonalności w zakreślonym obszarze       \\ \hline
+		\multicolumn{1}{l|}{Moduł}         & Wydzielona jako moduł cześć aplikacji backendowej implementująca funkcjonalności w zakreślonym obszarze             \\ \hline
 		\multicolumn{1}{l|}{Wiki}          & Moduł agregujący informacje na temat procesów rekrutacyjnych w firmach                                              \\ \hline
 		\multicolumn{1}{l|}{Job}           & Moduł agregujący oferty pracy w firmach                                                                             \\ \hline
 		\multicolumn{1}{l|}{Referral}      & Moduł umożliwiający tworzenie wewnętrznej rekrutacji do polecenia na dane stanowisko                                \\ \hline
@@ -80,10 +80,6 @@ Daniel Poznański\\
 
 \section{Przypadki użycia powiązane z zabezpieczeniem dostępu}
 \subsection{UC\_1 Logowanie za pomocą konta Google}
-\subsection{UC\_2 Dekoracja zapytania HTTP tokenem aktualnie zalogowanego użytkownika}
-//Po konsultacji
-\subsection{UC\_3 Autentykacja użytkownika}
-//Po konsultacji
 
 \section{Przypadki użycia powiązane z Wiki}
 \subsection{UC\_4 Wyświetl listę wpisów w Wiki}
@@ -133,12 +129,6 @@ Upraszcza innym komponentom integrację z informacjami przechowywanymi w bazie d
 
 \section{UC\_1 Logowanie za pomocą konta Google}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_login.pdf}
-
-\section{UC\_2 Dekoracja zapytania HTTP tokenem aktualnie zalogowanego użytkownika}
-\includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_decorate_headers.pdf}
-
-\section{UC\_3 Autentykacja użytkownika}
-\includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_user_auth.pdf}
 
 \section{UC\_4 Wyświetl listę wpisów w Wiki}
 \includegraphics[width=\textwidth, keepaspectratio]{graphics/sequence_diagram_wiki_list.pdf}

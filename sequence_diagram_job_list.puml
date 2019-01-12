@@ -23,9 +23,9 @@ end box
 
 User -> JobScreen : navigateToJobScreen()
 activate JobScreen
-ref over JobScreen : **UC_2**
+ref over JobScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
 JobScreen -> HydraController : **GET /job/jobs** (token)
-ref over HydraController : **UC_3**
+ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
 activate HydraController
 HydraController -> JobService : getJobs()

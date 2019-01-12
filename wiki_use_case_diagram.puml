@@ -6,14 +6,6 @@ actor user
   usecase UC_1 as "**UC_1**
   // Auth // 
   Logowanie za pomocą konta Google"
-  usecase UC_2 as "**UC_2** 
-  // Auth // 
-  Dekoracja zapytania HTTP 
-  tokenem aktualnie zalogowanego użytkownika"
-  usecase UC_3 as "**UC_3** 
-  // Auth // 
-  Autentykacja użytkownika"
-
 
   usecase UC_4 as "**UC_4** 
   // Wiki // 
@@ -25,25 +17,11 @@ actor user
   // Wiki // 
   Zagłosuj na wpis na Wiki"
 
+    user ---> UC_1
+    user ---> UC_4
 
-    UC_5 .> UC_4 : extends
-    UC_6 .> UC_4 : extends
-
-
-    user --> UC_1
-    user --> UC_4
-    UC_3 .> UC_1 : includes
-
-    UC_1 .> UC_4 : includes
-
-    UC_4 ....> UC_2 : includes
-    UC_4 ....> UC_3 : includes
-
-    UC_5 ....> UC_2 : includes
-    UC_5 ....> UC_3 : includes
-
-    UC_6 ....> UC_2 : includes
-    UC_6 ....> UC_3 : includes
-
+    UC_5 ..> UC_4 : extends
+    UC_6 ..> UC_4 : extends
+    UC_1 ..> UC_4 : includes
     
 @enduml

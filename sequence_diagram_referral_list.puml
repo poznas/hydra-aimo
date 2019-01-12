@@ -23,9 +23,9 @@ end box
 
 User -> ReferralScreen : navigateToReferralScreen()
 activate ReferralScreen
-ref over ReferralScreen : **UC_2**
+ref over ReferralScreen : **UC_4 / DECORATE**\n**REQUEST WITH**\n**JWT TOKEN**
 ReferralScreen -> HydraController : **GET /referral/referrals** (token)
-ref over HydraController : **UC_3**
+ref over HydraController : **UC_4 / VALIDATE USER TOKEN**
 
 activate HydraController
 HydraController -> ReferralService : getReferrals()
