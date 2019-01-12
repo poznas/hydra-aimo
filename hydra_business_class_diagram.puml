@@ -30,8 +30,6 @@ enum RecruitmentType {
 class Information {
     informationId : int
     content : String
-    programmingLanguage : String
-    recruitmentType : RecruitmentType
 }
 
 enum Vote {
@@ -40,18 +38,23 @@ enum Vote {
 }
 
 class InformationVote {
-    vote : Vote
 }
 
 class JobAnnouncement {
     jobId : int
     city : String
     jobTitle : String
-    jobDescription : String 
-    programmingLanguages : String[]
+    jobDescription : String
     minSalary : int
     maxSalary : int 
     closingDate : Date
+}
+
+enum ProgrammingLanguage {
+    JAVA
+    JAVASCRIPT
+    PYTHON
+    ...
 }
 
 class ReferralAnnouncement {
@@ -61,21 +64,23 @@ class ReferralAnnouncement {
     referralBonusPercentage : double
 }
 
-User *---> Privilege : privileges
+User "privileges" *---> Privilege
 
-InformationVote <. Vote
-Information <. RecruitmentType
+InformationVote -> Vote : < value
+Information -> RecruitmentType : < recruitmentType
+JobAnnouncement "languages" *---> ProgrammingLanguage
+Information "language" ---> ProgrammingLanguage
 
-Information "*" --> "1" User : < author 
-Information "*" --> "1" Company : < company
+Information "author *" --> "1" User 
+Information "company *" --> "1" Company
 
 InformationVote "voter" --* "authorVotes" User 
-InformationVote <--* Information : informationVotes
+InformationVote "informationId" --* "informationVotes" Information
 
-JobAnnouncement "*" --> "1" Company : < company
+JobAnnouncement "company" --* "jobAnnouncements" Company 
 
-ReferralAnnouncement "*" --> "1" User : < author
-ReferralAnnouncement "*" --> "1" JobAnnouncement : < job
+ReferralAnnouncement "author *" --> "1" User
+ReferralAnnouncement "job *" --> "1" JobAnnouncement
 
 
 @enduml
