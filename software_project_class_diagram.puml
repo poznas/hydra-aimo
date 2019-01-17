@@ -1,0 +1,185 @@
+@startuml
+
+hide empty members
+
+
+'skinparam linetype ortho
+
+
+namespace client #LightBlue {
+    class AsyncStorage {
+        saveJwtToken(jwtToken : String)
+        getJwtToken() : String
+    }
+
+    class BaseScreen {
+        decorateRequestHeaders(RQ : object, jwtToken : String)
+        sendRequest(RQ : object)
+        showErrorMessage(message : String)
+        navigateToLoginScreen()
+        navigateBack()
+    }
+
+    class LoginScreen {
+        saveJwtToken(jwtToken : String)
+        navigateToWikiScreen()
+        __ Google API __
+        googleSignIn() : String
+    }
+
+    class WikiScreen {
+        entries : List<Information>
+        renderWikiEntries()
+        navigateToAddWikiInfoScreen()
+    }
+
+    class AddWikiInfoScreen {
+        info : Information
+        companies : List<Companies>
+        renderWikiEntry()
+        updateCompanyPicker()
+    }
+
+    class JobScreen {
+        jobs : List<JobAnnouncement>
+        renderJobs()
+        navigateToJobDetailsScreen()
+    }
+
+    class JobDetailsScreen {
+        job : JobAnnouncement
+        renderJobDetails()
+        navigateToCreateReferralScreen()
+    }
+
+    class CreateReferralScreen {
+        navigateToReferralScreen()
+    }
+
+    class ReferralScreen {
+        referrals : List<ReferrralAnnouncement>
+        renderReferrals()
+        navigateToReferralDetailsScreen()
+    }
+
+    class ReferralDetailsScreen {
+        referral : ReferrralAnnouncement
+        renderReferralDetails()
+    }
+
+    BaseScreen -right-> AsyncStorage
+
+    BaseScreen <|--up- LoginScreen
+    BaseScreen <|--up- WikiScreen
+    BaseScreen <|--up- AddWikiInfoScreen
+    BaseScreen <|--up- JobScreen
+    BaseScreen <|--up- JobDetailsScreen
+    BaseScreen <|--up- CreateReferralScreen
+    BaseScreen <|--up- ReferralScreen
+    BaseScreen <|--up- ReferralDetailsScreen
+
+    BaseScreen .up.> LoginScreen
+    LoginScreen .right.> WikiScreen
+    WikiScreen .right.> AddWikiInfoScreen
+    JobScreen .right.> JobDetailsScreen
+    JobDetailsScreen .right.> CreateReferralScreen
+    CreateReferralScreen .right.> ReferralScreen
+    ReferralScreen .right.> ReferralDetailsScreen
+    
+}
+
+namespace server #Pink {
+    class LoginFilter {
+        generateJwtToken(userId : String) : String
+        __ **REST RQ Handlers** __
+        **POST /auth/login**
+        login(tokenID : String) : String
+        __ Google API __
+        verifyToken(tokenID : String) : User
+    }
+
+    class BearerFilter {
+        validateJwtToken(jwtToken : String) : String
+        decorateRequestWithUserId(request : RQ, userId : String)
+    }
+
+    class HydraController {
+        __ **REST RQ Handlers** __
+        **GET /auth/privileges**
+        getUserPrivileges(userId : String) : List<Privilege>
+        **GET /wiki/entries**
+        getWikiEntries() : List<Information>
+        **GET /wiki/companies**
+        getCompanies() : List<Company>
+        **POST /wiki/info/add**
+        addWikiInfo(userId : String, info : Information)
+        **POST /wiki/info/vote**
+        voteForWikiInfo(vote : InformationVote)
+        **GET /job/jobs**
+        getJobs() : List<JobAnnouncement>
+        **POST /referral/add**
+        addReferral(userId : String, referral : ReferralAnnouncement)
+        **GET /referral/referrals**
+        getReferrals() : List<ReferralAnnouncement>
+
+    }
+
+    class UserService {
+        userExists(userId : String) : boolean
+        createUser(user : User)
+    }
+
+    class PrivilegeService {
+        getUserPrivileges(userId : String) : List<Privilege>
+    }
+
+    class WikiService {
+        getWikiEntries() : List<Information>
+        getCompanies() : List<Company>
+        addWikiInfo(info : Information)
+        voteForWikiInfo(vote : InformationVote)
+    }
+
+    class JobService {
+        getJobs() : List<JobAnnouncement>
+    }
+
+    class ReferralService {
+        addReferral(referral : ReferralAnnouncement)
+        getReferrals() : List<ReferralAnnouncement>
+    }
+
+    class HydraRepository {
+        userExists(userId : String) : boolean
+        createUser(user : User)
+        getWikiEntries() : List<Information>
+        getUserPrivileges(userId : String) : List<Privilege>
+        getCompanies() : List<Company>
+        addWikiInfo(info : Information)
+        voteForWikiInfo(vote : InformationVote)
+        getJobs() : List<JobAnnouncement>
+        activeReferralExist(userId : String, jobId : int) : boolean
+        addReferral(referral : ReferralAnnouncement)
+        getReferrals() : List<ReferralAnnouncement>
+    }
+
+    BearerFilter --> HydraController
+    LoginFilter --> UserService
+
+    HydraController --> PrivilegeService
+    HydraController --> WikiService
+    HydraController --> JobService
+    HydraController --> ReferralService
+
+    UserService --> HydraRepository
+    WikiService --> HydraRepository
+    JobService --> HydraRepository
+    ReferralService --> HydraRepository
+    PrivilegeService --> HydraRepository
+}
+
+client.BaseScreen --- server.LoginFilter : REST / JSON
+client.BaseScreen --- server.BearerFilter : REST / JSON
+
+
+@enduml
