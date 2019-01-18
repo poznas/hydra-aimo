@@ -12,6 +12,23 @@
 	top=20mm,
 	footskip=.5cm,
 }
+\usepackage{booktabs}
+
+\newcommand\addrow[2]{#1 &#2\\ }
+
+\newcommand\addheading[2]{#1 &#2\\ \hline}
+\newcommand\tabularhead{\begin{center} \begin{tabular}{lp{8cm}}
+		\hline
+	}
+	
+	\newcommand\addmulrow[2]{ \begin{minipage}[t][][t]{6cm}#1\end{minipage}% 
+		&\begin{minipage}[t][][t]{8cm}
+			\begin{itemize} #2 \newline \end{itemize}
+		\end{minipage}\\ \\  \hline}
+	
+	\newenvironment{usecase}{\tabularhead}
+	{\hline\end{tabular} \end{center}}
+
 \usepackage[bookmarks=true]{hyperref}
 \hypersetup{
     bookmarks=false,    % show bookmarks bar?
@@ -75,17 +92,182 @@ Daniel Poznański\\
 \section{Przypadki użycia powiązane z zabezpieczeniem dostępu}
 \subsection{UC\_1 Logowanie za pomocą konta Google}
 
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik, Google} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce zalogować się do Systemu}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik klika w przycisk logowania}
+	\addheading{Warunki wstępne}{Użytkownik posiada konto w serwisie Google}
+	\addheading{Warunki końcowe sukcesu}{Użytkownik zostaje poprawnie zalogowany}
+	\addheading{Warunki końcowe porażki}{Użytkownik nie zostaje zalogowany, o czym informuje go komunikat}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik klika przycisk logowania
+		\item[] 2. System wywołuje serwis Google, w którym użytkownik dokonuje logowania na swoje konto Google
+		\item[] 3. System weryfikuje zwrócony przez Google token po stronie serwera
+		\item[] 4. Google zwraca dane użytkownika
+		\item[] 5. System zapisuje dane o nowym użytkowniku
+		\item[] 6. Przejście do UC\_4
+	}
+	\addmulrow{Scenariusz alternatywny}{
+		\item[] 3.1 Google zwraca komunikat o błędzie
+		\item[] 3.2 System wyświetla komunikat o niepowodzeniu weryfikacji
+	}
+	\addmulrow{Scenariusz alternatywny}{
+		\item[] 4.1 Użytkownik istnieje już w systemie
+		\item[] 4.2 Przejście do M.6
+	}
+\end{usecase}
+
 \section{Przypadki użycia powiązane z Wiki}
 \subsection{UC\_4 Wyświetl listę wpisów w Wiki}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce wyświetlić wpisy wiki}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik zostaje przenawigowany do listy wpisów wiki}
+	\addheading{Warunki wstępne}{Użytkownik jest poprawnie zalogowany}
+	\addheading{Warunki końcowe sukcesu}{Użytkownikowi zostaje wyświetlona lista wpisów wiki}
+	\addheading{Warunki końcowe porażki}{Użytkownik jest informowany o niepowodzeniu operacji}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik nawiguje do strony z listą wpisów wiki
+		\item[] 2. System wyświetla listę wpisów wiki
+	}
+\end{usecase}
 \subsection{UC\_5 Dodaj wpis do Wiki}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce dodać nowy wpis wiki}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik naciska przycisk dodania wpisu}
+	\addheading{Warunki wstępne}{Użytkownik jest na stronie z załadowanymi wpisami wiki}
+	\addheading{Warunki końcowe sukcesu}{Nowy wpis zostaje dodany}
+	\addheading{Warunki końcowe porażki}{Nowy wpis nie zostaje dodany. Użytkownik jest informowany o niepowodzeniu operacji}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik naciska przycisk dodania wpisu
+		\item[] 2. System sprawdza czy użytkownik ma uprawnienie 'FN\_PRV\_CREATE\_INFORMATION'
+		\item[] 3. System przenosi użytkownika do formularza nowego wpisu wiki
+		\item[] 4. System ładuje dostępną listę firm do wyboru
+		\item[] 5. Użytkownik wypełnia formularz i klika przycisk zatwierdzenia
+		\item[] 6. System zapisuje nowy wpis
+		\item[] 7. System przenosi użytkownika do poprzedniej strony
+	}
+	\addmulrow{Scenariusz alternatywny}{
+		\item[] 2.1 Użytkownik nie posiada tego upranienia
+		\item[] 2.2 System wyświetla komunikat z imformacją
+	}
+\end{usecase}
+
 \subsection{UC\_6 Zagłosuj na wpis na Wiki}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce zagłosować na wpis wiki}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik naciska opcję głosu}
+	\addheading{Warunki wstępne}{Użytkownik jest na stronie z załadowanymi wpisami wiki}
+	\addheading{Warunki końcowe sukcesu}{Głos użytkownika zostaje zapisany}
+	\addheading{Warunki końcowe porażki}{Głos użytkownika nie zostaje zapisany}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik wybiera jedną z trzech opcji głosowania
+		\item[] 2. System zapisuje głos użytkownika
+		\item[] 3. System aktualizuje widok listy wpisów wiki
+	}
+\end{usecase}
 
 \section{Przypadki użycia powiązane z Job, Referral}
 \subsection{UC\_7 Wyświetl listę ofert pracy}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce wyświetlić oferty pracy}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik nawiguje do listy ofert pracy}
+	\addheading{Warunki wstępne}{Użytkownik jest poprawnie zalogowany}
+	\addheading{Warunki końcowe sukcesu}{Użytkownikowi zostaje wyświetlona lista ofert pracy}
+	\addheading{Warunki końcowe porażki}{Użytkownik jest informowany o niepowodzeniu operacji}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik nawiguje do strony z listą ofert pracy
+		\item[] 2. System wyświetla listę aktualnych ofert pracy
+	}
+\end{usecase}
+
 \subsection{UC\_8 Wyświetl szczegóły oferty pracy}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce zobaczyć szczegóły oferty pracy}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik naciska na element listy ofert pracy}
+	\addheading{Warunki wstępne}{Użytkownik jest na stronie z załadowanymi ofertami pracy}
+	\addheading{Warunki końcowe sukcesu}{Użytkownik zostaje przeniesiony do strony szczegółów oferty pracy}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik naciska na element listy ofert pracy
+		\item[] 2. System przenosi użytkownika do strony szczegółów oferty pracy
+	}
+\end{usecase}
+
 \subsection{UC\_9 Dodaj RA}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce dodać nowe RA}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik naciska przycisk dodania RA}
+	\addheading{Warunki wstępne}{Użytkownik jest na stronie z ze szczegółami oferty pracy}
+	\addheading{Warunki końcowe sukcesu}{Nowe RA zostaje dodane}
+	\addheading{Warunki końcowe porażki}{Nowe RA nie zostaje dodane. Użytkownik jest informowany o niepowodzeniu operacji}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik naciska przycisk dodania RA
+		\item[] 2. System sprawdza czy użytkownik ma uprawnienie 'FN\_PRV\_CREATE\_REFERRAL'
+		\item[] 3. System przenosi użytkownika do formularza nowego RA
+		\item[] 4. Użytkownik wypełnia formularz i klika przycisk zatwierdzenia
+		\item[] 5. System zapisuje nowe RA
+		\item[] 6. Przejście do UC\_10
+	}
+	\addmulrow{Scenariusz alternatywny}{
+		\item[] 2.1 Użytkownik nie posiada tego upranienia
+		\item[] 2.2 System wyświetla komunikat z imformacją
+	}
+	\addmulrow{Scenariusz alternatywny}{
+		\item[] 4.1 Istnieje już aktywne RA przypisane do danej oferty pracy stworzone przez użytkownika
+		\item[] 4.2 System wyświetla komunikat z imformacją
+		\item[] 4.3 System przenosi użytkownika do poprzedniej strony
+	}
+\end{usecase}
+
 \subsection{UC\_10 Wyświetl listę RA}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce wyświetlić listę RA}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik zostaje przenawigowany do listy RA}
+	\addheading{Warunki wstępne}{Użytkownik jest poprawnie zalogowany}
+	\addheading{Warunki końcowe sukcesu}{Użytkownikowi zostaje wyświetlona lista RA}
+	\addheading{Warunki końcowe porażki}{Użytkownik jest informowany o niepowodzeniu operacji}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik nawiguje do strony z listą RA
+		\item[] 2. System wyświetla listę aktualnych RA
+	}
+\end{usecase}
+
 \subsection{UC\_11 Wyświetl szczegóły RA}
+\begin{usecase}
+	\addheading{Aktor}{Użytkownik} 
+	\addheading{Zakres}{System Hydra}
+	\addheading{Poziom}{Systemowy}
+	\addheading{Udziałowcy i ich cele}{Użytkownik chce zobaczyć szczegóły RA}
+	\addheading{Zdarzenie wyzwalające}{Użytkownik naciska na element listy RA}
+	\addheading{Warunki wstępne}{Użytkownik jest na stronie z załadowanymi RA}
+	\addheading{Warunki końcowe sukcesu}{Użytkownik zostaje przeniesiony do strony szczegółów RA}
+	\addmulrow{Scenariusz główny (M)}{
+		\item[] 1. Użytkownik naciska na element listy RA
+		\item[] 2. System przenosi użytkownika do strony szczegółów RA
+	}
+\end{usecase}
 
 \chapter{Architektura systemu}
 
