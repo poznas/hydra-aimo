@@ -1,0 +1,10 @@
+@startuml
+|Użytkownik|
+start
+:Klinknięcie na element listy ofert pracy;
+|#AntiqueWhite|System|
+:Załadowanie szczegółów danej oferty pracy;
+|#AntiqueWhite|System|
+:Wyświetlenie szczegółów oferty pracy;
+stop
+@enduml

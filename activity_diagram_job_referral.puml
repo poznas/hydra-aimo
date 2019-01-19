@@ -1,0 +1,33 @@
+@startuml
+start
+if ()
+    #LightGreen:Nawigacja do listy ofert pracy;
+    #Pink:**UC_7** Wyświetl listę ofert pracy;
+    if ()
+        #LightGreen:kliknięcie w pozycję
+        na liście ofert pracy;
+        #Pink:**UC_8** Wyświetl szczegóły oferty pracy;
+
+        if ()
+            #LightGreen:kliknięcie w przycisk dodania RA;
+            #Pink:**UC_9** Dodaj RA;
+        else ()
+            stop
+        endif
+    else ()
+        stop
+    endif
+
+else ()
+    #LightGreen:Nawigacja do listy RA;
+endif
+#Pink:**UC_10** Wyświetl listę RA;
+
+if ()
+    #LightGreen:kliknięcie w pozycję na liście RA;
+    #Pink:**UC_11** Wyświetl szczegóły RA;
+else ()
+    stop
+endif
+stop
+@enduml

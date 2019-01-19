@@ -1,0 +1,10 @@
+@startuml
+|Użytkownik|
+start
+:Klinknięcie na element listy RA;
+|#AntiqueWhite|System|
+:Załadowanie szczegółów danej RA;
+|#AntiqueWhite|System|
+:Wyświetlenie szczegółów RA;
+stop
+@enduml

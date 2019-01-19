@@ -1,0 +1,10 @@
+@startuml
+|Użytkownik|
+start
+:Nawigacja do listy RA;
+|#AntiqueWhite|System|
+:Załadowanie danych o liście RA;
+|#AntiqueWhite|System|
+:Wyświetlenie aktywnych RA;
+stop
+@enduml

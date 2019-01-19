@@ -1,0 +1,18 @@
+@startuml
+start
+#LightGreen:Wejście na stronę listy wpisów Wiki;
+#Pink:**UC_4** Wyświetl listę wpisów w Wiki;
+
+if (dodatkowa akcja?) then (tak)
+    if ()
+        #LightGreen :kliknięcie w opcję głosowania;
+        #Pink :**UC_6** Zagłosuj na wpis na Wiki;
+    else ()
+        #LightGreen :Dodanie nowego wpisu Wiki;
+        #Pink :**UC_5** Dodaj wpis do Wiki;
+    endif
+else (nie)
+    stop
+endif
+stop
+@enduml
