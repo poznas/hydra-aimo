@@ -60,6 +60,27 @@ Daniel Poznański\\
 \maketitle
 \tableofcontents
 \chapter{Ogólny opis systemu}
+\section{Cel Systemu}
+AGHydra swoim działaniem skupia się wokół ofert pracy w branży IT.
+Możliwości jakie udostępnia użytkownikom można podzielić na 3 obszary:
+
+\subsection{Wiki}
+Osoby, które miały okazję brać udział w procesie rekrutacji na dane stanowisko, mają możliwość podzielenia się istotnymi szczegółami z resztą użytkowników.
+Każdą taką informację można rozróżnić ze względu na:
+\begin{itemize}
+	\item firmę \textit{(której wpis dotyczy)}
+	\item typ rekrutacji \textit{(test pisemny, rozmowa)}
+	\item język programowania \textit{(którego zagadnienie dotyczyło)}
+\end{itemize}
+Wiarygodność wpisów jak i samych ich autorów w tym dziale jest obrazowana poprzez stosunki oddanych głosów przez innych użytkowników. \\ \\
+Nazwa systemu inpspirowana jest właśnie tą funkcjolanością. Gdy jeden student AGH nie zda testu wstępnego, wróci następny mądrzejszy o wiedzę poprzedniego.
+
+\subsection{Job, Referral}
+Dział Job agreguje w sobie oferty pracy. 
+Dział Referral jest z nim mocno powiązany. 
+Firmy często proponują swoim pracownikom pokaźne kwoty w zamian za polecenie kogoś na stanowisko pracy. 
+Hydra umożliwia takim osobom wystawienie ogłoszenia o możliwości polecenia. 
+Autor ma możliwość również podziału z ostatecznym polecanym nagrodą.
 
 \section{Słownik pojęć}
 \begin{table}[ht]
@@ -68,14 +89,38 @@ Daniel Poznański\\
 		\textbf{NAZWA}                     & \textbf{OPIS}                                                                                                       \\ \hline
 		\multicolumn{1}{l|}{Firma}         & Określenie firm działających w branży IT, oferujących stanowiska stażowe lub normalne oferty pracy dla programistów \\ \hline
 		\multicolumn{1}{l|}{System, Hydra} & całość rozwiązania składająca się z aplikacji frontowej i backendu                                                  \\ \hline
-		\multicolumn{1}{l|}{UF}            & Uprawnienie funkcjonalne, wymagane do wykonania określonych akcji, przypisane do użytkownika                        \\ \hline
-		\multicolumn{1}{l|}{Moduł}         & Wydzielona jako moduł cześć aplikacji backendowej implementująca funkcjonalności w zakreślonym obszarze             \\ \hline
 		\multicolumn{1}{l|}{Wiki}          & Moduł agregujący informacje na temat procesów rekrutacyjnych w firmach                                              \\ \hline
 		\multicolumn{1}{l|}{Job}           & Moduł agregujący oferty pracy w firmach                                                                             \\ \hline
-		\multicolumn{1}{l|}{Referral}      & Moduł umożliwiający tworzenie wewnętrznej rekrutacji do polecenia na dane stanowisko                                \\ \hline
+		\multicolumn{1}{l|}{Referral}      & Moduł umożliwiający tworzenie wewnętrznej rekrutacji do polecenia na dane stanowisko (ofertę pracy)                 \\ \hline
 		\multicolumn{1}{l|}{RA}            & Referral Announcement - ogłoszenie w dziale referral                                                                \\ \hline
 	\end{tabular}
 \end{table}
+
+\section{Udziałowcy i użytkownicy}
+W Systemie nie ma podziału użytkowników na role \textit{(np. admin, moderator)}. 
+Zamiast tego przypisuje się użytkownikom poszczególne uprawnienia funkcjonalne zezwalające na podjęcie określonych akcji:
+\begin{itemize}
+	\item FN\_PRV\_CREATE\_INFORMATION \textit{ - pozwala stworzyć wpis Wiki}
+	\item FN\_PRV\_CREATE\_REFERRAL \textit{ - pozwala stworzyć RA}
+\end{itemize}
+
+\section{Podstawowe cele udziałowców i użytkowników}
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{p{2.5cm}|p{10cm}|p{2cm}}
+		\textbf{Udziałowiec}               & \textbf{Cel}                                                & \textbf{Priorytet} \\ \hline
+		\multicolumn{1}{l|}{Użytkownik}    & Przeglądanie i manipulacja wpisami Wiki                     & Wysoki    \\ \hline
+		\multicolumn{1}{l|}{Użytkownik}    & Przeglądanie dostępnych ofert pracy                         & Wysoki    \\ \hline
+		\multicolumn{1}{l|}{Użytkownik}    & Przeglądanie i manipulacja RA                               & Wysoki    \\ \hline
+		\multicolumn{1}{l|}{Użytkownik}    & Logowanie za pomocą konta Google                            & Średni    \\ \hline
+		\multicolumn{1}{l|}{Nabywca}       & Aplikacje klienckie dostępnie na platformy Android i iOS    & Średni    \\ \hline
+		\multicolumn{1}{l|}{Zespół}        & Pobieranie danych o ofertach pracy z zewnętrznych serwisów  & Niski     \\ \hline
+		\multicolumn{1}{l|}{Zespół}        & Praca w Java 8+                                             & Średni    \\ \hline
+	\end{tabular}
+\end{table}
+
+\section{Granice Systemu}
+\includegraphics[width=\textwidth, keepaspectratio]{graphics/system_border.pdf}
 
 \section{Lista możliwości}
 \subsection{Obszar Wiki}

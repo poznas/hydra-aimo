@@ -1,0 +1,12 @@
+@startuml
+
+
+:Użytkownik: as User  
+actor Google
+
+rectangle "\n\n\n\n                 AGHydra                 \n\n\n\n" as AGHydra
+
+User -right-> AGHydra
+AGHydra <-right- Google
+
+@enduml
